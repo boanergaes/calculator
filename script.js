@@ -5,24 +5,6 @@ const clrBtn = document.getElementById('clr')
 const delBtn = document.getElementById('del')
 const eqlBtn = document.getElementById('eql')
 
-const percentBtn = document.getElementById('per')
-const minusBtn = document.getElementById('mns')
-const plusBtn = document.getElementById('pls')
-const divBtn = document.getElementById('div')
-const multipBtn = document.getElementById('mul')
-const decimalBtn = document.getElementById('dec')
-
-const zeroBtn = document.getElementById('zer')
-const oneBtn = document.getElementById('one')
-const twoBtn = document.getElementById('two')
-const threeBtn = document.getElementById('thr')
-const fourBtn = document.getElementById('fur')
-const fiveBtn = document.getElementById('fiv')
-const sixBtn = document.getElementById('six')
-const sevenBtn = document.getElementById('sev')
-const eightBtn = document.getElementById('eig')
-const nineBtn = document.getElementById('nin')
-
 const OPERATIONS = new Set( ['+', '-', '/', '*', '%'] )
 const NUMBERS = new Set( ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 
@@ -77,7 +59,7 @@ function evaluate() {
         '/': 1,
         '%': 1,
     }
-    let str = outPut.textContent
+    let str = outPut.textContent + '+0'
 
     if (OPERATIONS.has(str[str.length - 1])) return
 
@@ -88,10 +70,8 @@ function evaluate() {
             segments.push(curr)
             segments.push(str[i])
             curr = ''
-            i += 1
         }
-
-        curr += str[i]
+        else curr += str[i]
     }
     segments.push(curr)
 
@@ -123,33 +103,10 @@ function evaluate() {
                     nums.push(num2 / num1)
                     break
                 case '%':
-                    nums.push(num2 - num1)
+                    nums.push(num2 % num1)
             }
         }
         opr.push(n)
-    }
-
-    while (opr.length !== 0) {
-        const num1 = parseFloat(nums.pop())
-        const num2 = parseFloat(nums.pop())
-        const op = opr.pop()
-
-        switch (op) {
-            case '+':
-                nums.push(num2 + num1)
-                break
-            case '-':
-                nums.push(num2 - num1)
-                break
-            case '*':
-                nums.push(num2 * num1)
-                break
-            case '/':
-                nums.push(num2 / num1)
-                break
-            case '%':
-                nums.push(num2 % num1)
-        }
     }
 
     const res = nums[0]

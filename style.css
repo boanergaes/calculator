@@ -72,4 +72,8 @@ div.inputs {
     width: 100%;
     border-radius: 2rem;
     background-color: hsl(0, 20%, 78%);
+
+    &:hover {
+        background-color: hsl(0, 20%, 76%);
+    }
 }
