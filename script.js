@@ -38,6 +38,8 @@ delBtn.addEventListener('click', del)
 
 eqlBtn.addEventListener('click', evaluate)
 
+initStore()
+
 function write(val) {
     let text = outPut.textContent
 
@@ -150,5 +152,21 @@ function evaluate() {
         }
     }
 
-    outPut.textContent = nums[0]
+    const res = nums[0]
+    storeLocal(str + ' = ' + res)
+    outPut.textContent = res
+}
+
+function initStore() {
+    let store = localStorage.getItem('calc')
+    if (!store) {
+        localStorage.setItem('calc', JSON.stringify([]))
+    }
+}
+
+function storeLocal(str) {
+    let store = localStorage.getItem('calc')
+    store = JSON.parse(store)
+    store.push(str)
+    localStorage.setItem('calc', JSON.stringify(store))
 }
