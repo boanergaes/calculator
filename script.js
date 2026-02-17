@@ -26,12 +26,12 @@ function write(val) {
     let text = outPut.textContent
 
     if (text == '0') {
-        outPut.textContent = !OPERATIONS.has(val) ? val : '0'
+        outPut.textContent = val === '-' || !OPERATIONS.has(val) ? val : '0'
         return
     }
 
     if (OPERATIONS.has(val) && OPERATIONS.has(text[text.length - 1])) {
-        if (val === text[text.length - 1]) return
+        if (val === text[text.length - 1] || (text.length === 1 && text[0] === '-')) return
 
         outPut.textContent = text.slice(0, text.length - 1) + val
         return
@@ -52,64 +52,11 @@ function del() {
 }
 
 function evaluate() {
-    const PRIORITY = {
-        '+': 0,
-        '-': 0,
-        '*': 1,
-        '/': 1,
-        '%': 1,
-    }
-    let str = outPut.textContent + '+0'
+    const str = outPut.textContent
 
     if (OPERATIONS.has(str[str.length - 1])) return
-
-    const segments = []
-    let curr = ''
-    for (let i = 0; i < str.length; i++) {
-        if (OPERATIONS.has(str[i])) {
-            segments.push(curr)
-            segments.push(str[i])
-            curr = ''
-        }
-        else curr += str[i]
-    }
-    segments.push(curr)
-
-    let nums = []
-    let opr = []
-
-    for (n of segments) {
-        if (!OPERATIONS.has(n)) {
-            nums.push(n)
-            continue
-        }
-        
-        while (opr.length !== 0 && PRIORITY[n] <= PRIORITY[opr[opr.length - 1]]) {
-            const num1 = parseFloat(nums.pop())
-            const num2 = parseFloat(nums.pop())
-            const op = opr.pop()
-
-            switch (op) {
-                case '+':
-                    nums.push(num2 + num1)
-                    break
-                case '-':
-                    nums.push(num2 - num1)
-                    break
-                case '*':
-                    nums.push(num2 * num1)
-                    break
-                case '/':
-                    nums.push(num2 / num1)
-                    break
-                case '%':
-                    nums.push(num2 % num1)
-            }
-        }
-        opr.push(n)
-    }
-
-    const res = nums[0]
+    
+    res = eval(str)
     storeLocal(str + ' = ' + res)
     outPut.textContent = res
 }
